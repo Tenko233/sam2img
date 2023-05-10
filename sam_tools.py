@@ -1,4 +1,5 @@
 import time
+import matplotlib.pyplot as plt
 import torch
 from segment_anything import SamPredictor, SamAutomaticMaskGenerator, sam_model_registry
 
@@ -73,7 +74,6 @@ def contour_with_box(image, box, model_type=None, model_path=None, device=None):
 
 
 def auto_contour(image, model_type=None, model_path=None, device=None):
-    """全自动分割"""
     if model_type is None:
         model_type = "vit_h"
     if model_path is None:
@@ -95,3 +95,21 @@ def auto_contour(image, model_type=None, model_path=None, device=None):
     spent_time = round(time2 - time1, 3)
     print(f"Auto-segmentation completed. Time：{current_time2}，time spent：{spent_time}s。")
     return masks
+
+
+# The following two functions are copied from SAM's demo
+def show_points(coords, labels, ax, marker_size=375):
+    """显示选取的标注点"""
+    pos_points = coords[labels == 1]  # 样本内的点
+    neg_points = coords[labels == 0]  # 样本外的点
+    ax.scatter(pos_points[:, 0], pos_points[:, 1], color='green', marker='.', s=marker_size, edgecolor='white',
+               linewidth=1.25)
+    ax.scatter(neg_points[:, 0], neg_points[:, 1], color='red', marker='.', s=marker_size, edgecolor='white',
+               linewidth=1.25)
+
+
+def show_box(box, ax):
+    """显示box"""
+    x0, y0 = box[0], box[1]
+    w, h = box[2] - box[0], box[3] - box[1]
+    ax.add_patch(plt.Rectangle((x0, y0), w, h, edgecolor='green', facecolor=(0, 0, 0, 0), lw=2))

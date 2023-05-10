@@ -33,10 +33,13 @@ if input_box:
             raise Exception("Box coordinates are not in the image.")
 
 # do segmentation task and generate layers
-psd = create_psd_from_image(image)
+array = np.array(image).astype(np.uint8)
+input_points = np.array(input_points)
+input_labels = np.array(input_labels)
+input_box = np.array(input_box)
 
 if segmentation_method == "point" or "all":
-    masks, _, _ = contour_with_points(image, input_points, input_labels, model, multi_output_mask)
+    masks, _, _ = contour_with_points(array, input_points, input_labels, multi_output_mask, model)
     for mask in masks:
         layer, mask = mask_to_layer(image, mask, output_layer)
         psd = add_layer_and_mask(psd, layer, mask)
