@@ -1,12 +1,8 @@
-import matplotlib.pyplot as plt
-from PIL import Image
-import numpy as np
-
 from sam_tools import *
 from image_tools import *
 
 # set parameters here
-input_image = "input/1.jpg"
+input_image = "input/2.jpg"
 output_folder = "output"
 model = "vit_h"  # "vit_h", "vit_b" or "vit_l"
 segmentation_methods = ["point", "box"]  # "point", "box", "auto", "all"
@@ -14,11 +10,11 @@ multi_output_mask = True  # only available for "point" or "box" mode
 output_layer = "crop"  # "crop", "mask" or "both"
 img_format = "png"  # "PNG" or "JPG"， no matter it is upper or lower case
 
-input_points = [[750, 50], [2000, 1000]]  # coordinates of point prompts, only available for "point" mode
+input_points = [[500, 50], [100, 1000]]  # coordinates of point prompts, only available for "point" mode
 input_labels = [1, 0]  # 1 for in the ROI and 0 for out,only available for "point" mode
 
 # coordinates of the diagonal vertexes of the box: (x1, y1, x2, y2), only available for "box" mode
-input_box = [100, 500, 1000, 1500]
+input_box = [100, 500, 600, 800]
 # end of parameters
 
 # load image and check whether the points and box are inside the image
@@ -91,3 +87,5 @@ if "auto" in segmentation_methods:
             layer = mask_to_layer(image, masks[i]['segmentation'], "mask")
             name = "auto_mask_" + str(i) + "." + img_format.lower()
             output_image(layer, name, output_folder)
+
+print(f"Done! Output images are saved in {output_folder}.")

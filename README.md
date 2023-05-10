@@ -1,7 +1,17 @@
 # SAM to IMG
-本项目用于将[Segment-Anything](https://github.com/facebookresearch/segment-anything)模型的分割结果作为图片导出。</br></br>
-This project is aimed at exporting the segmentation results of the [Segment-Anything](https://github.com/facebookresearch/segment-anything) model as images.</br></br>
-本プロジェクトは、[Segment-Anything](https://github.com/facebookresearch/segment-anything)モデルのセグメンテーション結果を画像ファイルとしてエクスポートすることを目的としています。</br></br>
+本项目用于将[Segment-Anything](https://segment-anything.com/)模型的分割结果作为图片导出。</br></br>
+This project is aimed at exporting the segmentation results of the [Segment-Anything](https://segment-anything.com/) model as images.</br></br>
+本プロジェクトは、[Segment-Anything](https://segment-anything.com/)モデルのセグメンテーション結果を画像ファイルとしてエクスポートすることを目的としています。</br></br>
+
+![1.jpg](imgs%2F1.jpg)
+![1-1.png](imgs%2F1-1.png)
+![1-2.png](imgs%2F1-2.png)
+</br>
+
+![2.jpg](imgs%2F2.jpg)
+![2-1.png](imgs%2F2-1.png)
+![2-2.png](imgs%2F2-2.png)
+</br>
 
 ## 环境配置/Environment Setup/環境設定
 安装依赖库/Install dependencies/依存ライブラリをインストールして：</br>
@@ -12,6 +22,11 @@ This project is aimed at exporting the segmentation results of the [Segment-Anyt
 >不用GUI可以不安装dash。</br>
 >You don't need to install dash if you don't want to use the GUI. </br>
 >GUIを使用したくない場合は、dashをインストールする必要はありません。</br>
+
+下载[SAM模型](https://github.com/facebookresearch/segment-anything)并放到```models```文件夹</br>
+Download the [SAM model](https://github.com/facebookresearch/segment-anything) and put it in the ```models``` folder.</br>
+[SAMモデル](https://github.com/facebookresearch/segment-anything)をダウンロードして、```models```フォルダに入れます。</br>
+
 
 ## 使用方法/Usage/使い方
 在```app.py```里设置参数，然后运行。</br>
