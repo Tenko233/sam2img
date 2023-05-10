@@ -64,3 +64,6 @@ Set parameters in ```app.py``` and then run it.</br>
 ```img_format```：エクスポートされる画像の形式（png、jpg）</br>
 >座標付きの元画像と、選択した点とボックスと、出力フォルダにエクスポートされます。</br>
 
+![original_image.png](imgs%2Foriginal_image.png)
+![point_prompt.png](imgs%2Fpoint_prompt.png)
+![box_prompt.png](imgs%2Fbox_prompt.png)
