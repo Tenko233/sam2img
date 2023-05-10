@@ -3,9 +3,8 @@
 This project is aimed at exporting the segmentation results of the [Segment-Anything](https://segment-anything.com/) model as images.</br></br>
 本プロジェクトは、[Segment-Anything](https://segment-anything.com/)モデルのセグメンテーション結果を画像ファイルとしてエクスポートすることを目的としています。</br></br>
 
-![1.jpg](imgs%2F1.jpg)![1-1.png](imgs%2F1-1.png)![1-2.png](imgs%2F1-2.png)
-
-![2.jpg](imgs%2F2.jpg)![2-1.png](imgs%2F2-1.png)![2-2.png](imgs%2F2-2.png)
+<img src="imgs/1.jpg" width="250"/><img src="imgs/1-1.png" width="250"/><img src="imgs/1-2.png" width="250"/>
+<img src="imgs/2.jpg" width="250"/><img src="imgs/2-1.png" width="250"/><img src="imgs/2-2.png" width="250"/>
 
 ## 环境配置/Environment Setup/環境設定
 安装依赖库/Install dependencies/依存ライブラリをインストールして：</br>
@@ -58,6 +57,4 @@ Set parameters in ```app.py``` and then run it.</br>
 ```img_format```：エクスポートされる画像の形式（png、jpg）</br>
 >座標付きの元画像と、選択した点とボックスと、出力フォルダにエクスポートされます。</br>
 
-![original_image.png](imgs%2Foriginal_image.png)
-![point_prompt.png](imgs%2Fpoint_prompt.png)
-![box_prompt.png](imgs%2Fbox_prompt.png)
+<img src="imgs/original_image.png" width="250"/><img src="imgs/point_prompt.png" width="250"/><img src="imgs/box_prompt.png" width="250"/>
