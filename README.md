@@ -3,15 +3,9 @@
 This project is aimed at exporting the segmentation results of the [Segment-Anything](https://segment-anything.com/) model as images.</br></br>
 本プロジェクトは、[Segment-Anything](https://segment-anything.com/)モデルのセグメンテーション結果を画像ファイルとしてエクスポートすることを目的としています。</br></br>
 
-![1.jpg](imgs%2F1.jpg)
-![1-1.png](imgs%2F1-1.png)
-![1-2.png](imgs%2F1-2.png)
-</br>
+![1.jpg](imgs%2F1.jpg)![1-1.png](imgs%2F1-1.png)![1-2.png](imgs%2F1-2.png)
 
-![2.jpg](imgs%2F2.jpg)
-![2-1.png](imgs%2F2-1.png)
-![2-2.png](imgs%2F2-2.png)
-</br>
+![2.jpg](imgs%2F2.jpg)![2-1.png](imgs%2F2-1.png)![2-2.png](imgs%2F2-2.png)
 
 ## 环境配置/Environment Setup/環境設定
 安装依赖库/Install dependencies/依存ライブラリをインストールして：</br>
