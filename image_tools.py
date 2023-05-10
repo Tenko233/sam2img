@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from PIL import Image
 
@@ -13,26 +14,29 @@ def is_in_image(point, size):
 
 
 def mask_to_layer(image, mask, mode):
-    if mode == "cut":
+    if mode == "crop":
         array = np.array(image)
-        print(array.shape)
         mask = mask.reshape(mask.shape[0], mask.shape[1], 1)
         layer = array * mask
         layer = Image.fromarray(layer)
-        out_mask = None
 
-    elif mode == "mask only":
+    elif mode == "mask":
         mask = (mask * 255).astype(np.uint8)
         layer = Image.fromarray(mask)
-        out_mask = None
 
-    elif mode == "both":
-        layer = image
-        mask = (mask * 255).astype(np.uint8)
-        out_mask = Image.fromarray(mask)
     else:
         print("Invalid mode.")
         layer = None
-        out_mask = None
 
-    return layer, out_mask
+    return layer
+
+
+def output_image(layer: Image.Image, name, target_folder):
+    if target_folder is None:
+        target_folder = 'output'
+        print(f"Target folder is not specified, use default folder: {target_folder}")
+    if not os.path.exists(target_folder):
+        os.makedirs(target_folder)
+        print(f"Target folder does not exist, create folder: {target_folder}")
+
+    layer.save(os.path.join(target_folder, name))
