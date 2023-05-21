@@ -45,4 +45,3 @@ def GroupInput(index,
         )
 
     return dbc.Row(content)
-

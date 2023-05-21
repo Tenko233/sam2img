@@ -12,6 +12,7 @@ This project is aimed at exporting the segmentation results of the [Segment-Anyt
 ```segment-anything```</br>
 ```matplotlib```</br>
 ```dash```</br>
+```dash-bootstrap-components```</br>
 >不用GUI可以不安装dash。</br>
 >You don't need to install dash if you don't want to use the GUI. </br>
 >GUIを使用したくない場合は、dashをインストールする必要はありません。</br>

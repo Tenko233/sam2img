@@ -11,8 +11,13 @@ models = {
 }
 
 
-def contour_with_points(image, point_coords, point_labels,
-                        multi_mask=None, model_type=None, model_path=None, device=None):
+def check_cuda():
+    return torch.cuda.is_available()
+
+
+def seg_with_points(image, point_coords, point_labels,
+                    multi_mask=None, model_type=None, model_path=None, device=None,
+                    need_info=False):
     if multi_mask is None:
         multi_mask = True
     if model_type is None:
@@ -39,12 +44,17 @@ def contour_with_points(image, point_coords, point_labels,
     current_time2 = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     time2 = time.time()
     spent_time = round(time2 - time1, 3)
-    print(f"Segmentation with points completed. Time：{current_time2}，time spent：{spent_time}s.")
+    info = f"Segmentation with points completed. Time：{current_time2}，time spent：{spent_time}s."
+    print(info)
+    torch.cuda.empty_cache()
 
-    return masks, scores, logits
+    if need_info:
+        return masks, scores, logits, info
+    else:
+        return masks, scores, logits
 
 
-def contour_with_box(image, box, model_type=None, model_path=None, device=None):
+def seg_with_box(image, box, model_type=None, model_path=None, device=None, need_info=False):
     if model_type is None:
         model_type = "vit_h"
     if model_path is None:
@@ -68,12 +78,17 @@ def contour_with_box(image, box, model_type=None, model_path=None, device=None):
     current_time2 = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     time2 = time.time()
     spent_time = round(time2 - time1, 3)
-    print(f"Segmentation with box completed. Time：{current_time2}，time spent：{spent_time}s。")
+    info = f"Segmentation with box completed. Time：{current_time2}，time spent：{spent_time}s."
+    print(info)
+    torch.cuda.empty_cache()
 
-    return masks, scores, logits
+    if need_info:
+        return masks, scores, logits, info
+    else:
+        return masks, scores, logits
 
 
-def auto_contour(image, model_type=None, model_path=None, device=None):
+def auto_seg(image, model_type=None, model_path=None, device=None, need_info=False):
     if model_type is None:
         model_type = "vit_h"
     if model_path is None:
@@ -93,15 +108,20 @@ def auto_contour(image, model_type=None, model_path=None, device=None):
     current_time2 = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     time2 = time.time()
     spent_time = round(time2 - time1, 3)
-    print(f"Auto-segmentation completed. Time：{current_time2}，time spent：{spent_time}s。")
-    return masks
+    info = f"Auto-segmentation completed. Time：{current_time2}，time spent：{spent_time}s。"
+    print(info)
+    torch.cuda.empty_cache()
+
+    if need_info:
+        return masks, info
+    else:
+        return masks
 
 
 # The following two functions are copied from SAM's demo
 def show_points(coords, labels, ax, marker_size=375):
-    """显示选取的标注点"""
-    pos_points = coords[labels == 1]  # 样本内的点
-    neg_points = coords[labels == 0]  # 样本外的点
+    pos_points = coords[labels == 1]
+    neg_points = coords[labels == 0]
     ax.scatter(pos_points[:, 0], pos_points[:, 1], color='green', marker='.', s=marker_size, edgecolor='white',
                linewidth=1.25)
     ax.scatter(neg_points[:, 0], neg_points[:, 1], color='red', marker='.', s=marker_size, edgecolor='white',
@@ -109,7 +129,6 @@ def show_points(coords, labels, ax, marker_size=375):
 
 
 def show_box(box, ax):
-    """显示box"""
     x0, y0 = box[0], box[1]
     w, h = box[2] - box[0], box[3] - box[1]
     ax.add_patch(plt.Rectangle((x0, y0), w, h, edgecolor='green', facecolor=(0, 0, 0, 0), lw=2))

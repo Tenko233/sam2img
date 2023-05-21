@@ -24,12 +24,12 @@ size = image.size
 if input_points:
     for point in input_points:
         if not is_in_image(point, size):
-            raise Exception("Point coordinates are not in the image.")
+            raise Exception("Point coordinates are not inside the image.")
 if input_box:
     vertexes = [[input_box[0], input_box[1]], [input_box[2], input_box[3]]]
     for vertex in vertexes:
         if not is_in_image(vertex, size):
-            raise Exception("Box coordinates are not in the image.")
+            raise Exception("Box coordinates are not inside the image.")
 
 # pre-process the image and prompts
 array = np.array(image).astype(np.uint8)
@@ -53,7 +53,7 @@ plt.clf()
 
 # start segmentation
 if "point" in segmentation_methods:
-    masks, _, _ = contour_with_points(array, input_points, input_labels, multi_output_mask, model)
+    masks, _, _ = seg_with_points(array, input_points, input_labels, multi_output_mask, model)
     for i in range(len(masks)):
         if output_layer == "crop" or "both":
             layer = mask_to_layer(image, masks[i], "crop")
@@ -65,7 +65,7 @@ if "point" in segmentation_methods:
             output_image(layer, name, output_folder)
 
 if "box" in segmentation_methods:
-    masks, _, _ = contour_with_box(array, input_box, model)
+    masks, _, _ = seg_with_box(array, input_box, model)
     for i in range(len(masks)):
         if output_layer == "crop" or "both":
             layer = mask_to_layer(image, masks[i], "crop")
@@ -77,7 +77,7 @@ if "box" in segmentation_methods:
             output_image(layer, name, output_folder)
 
 if "auto" in segmentation_methods:
-    masks = auto_contour(array, model)
+    masks = auto_seg(array, model)
     for i in range(len(masks)):
         if output_layer == "crop" or "both":
             layer = mask_to_layer(image, masks[i]['segmentation'], "crop")
