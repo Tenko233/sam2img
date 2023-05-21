@@ -1,0 +1,6 @@
+numpy~=1.24.1
+plotly~=5.14.1
+dash~=2.9.3
+torch~=2.0.1+cu118
+matplotlib~=3.7.1
+Pillow~=9.3.0
