@@ -35,7 +35,7 @@ def mask_to_layer(image, mask, mode):
     return layer
 
 
-def output_image(layer: Image.Image, name, target_folder):
+def export_image_to_file(layer: Image.Image, name, target_folder):
     if target_folder is None:
         target_folder = 'output'
         print(f"Target folder is not specified, use default folder: {target_folder}")

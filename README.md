@@ -23,12 +23,17 @@ Download the [SAM model](https://github.com/facebookresearch/segment-anything) a
 
 
 ## 使用方法/Usage/使い方
+### 不带GUI/Without GUI/GUIなし
 在```app.py```里设置参数，然后运行。</br>
 Set parameters in ```app.py``` and then run it.</br>
 ```app.py```でパラメータを設定してから実行します。</br>
->GUI版本还在开发中，目前暂不可用</br>
-> The GUI version is still under development and is not currently available.</br>
-> GUIバージョンはまだ開発中であり、現在利用できません。</br>
+
+### 带GUI/With GUI/GUIあり
+运行```dashapp.py```，浏览器打开127.0.0.1:8050。</br>
+Run ```dashapp.py```, open 127.0.0.1:8050 in browser.</br>
+```dashapp.py```を実行し、ブラウザで127.0.0.1:8050を開きます。</br>
+
+<img src="imgs/webui.jpeg">
 
 ## 参数说明/Parameter Description/パラメーターの説明
 ```input_image```：要分割的图像</br>

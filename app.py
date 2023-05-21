@@ -58,11 +58,11 @@ if "point" in segmentation_methods:
         if output_layer == "crop" or "both":
             layer = mask_to_layer(image, masks[i], "crop")
             name = "point_crop_" + str(i) + "." + img_format.lower()
-            output_image(layer, name, output_folder)
+            export_image_to_file(layer, name, output_folder)
         if output_layer == "mask" or "both":
             layer = mask_to_layer(image, masks[i], "mask")
             name = "point_mask_" + str(i) + "." + img_format.lower()
-            output_image(layer, name, output_folder)
+            export_image_to_file(layer, name, output_folder)
 
 if "box" in segmentation_methods:
     masks, _, _ = seg_with_box(array, input_box, model)
@@ -70,11 +70,11 @@ if "box" in segmentation_methods:
         if output_layer == "crop" or "both":
             layer = mask_to_layer(image, masks[i], "crop")
             name = "box_crop_" + str(i) + "." + img_format.lower()
-            output_image(layer, name, output_folder)
+            export_image_to_file(layer, name, output_folder)
         if output_layer == "mask" or "both":
             layer = mask_to_layer(image, masks[i], "mask")
             name = "box_mask_" + str(i) + "." + img_format.lower()
-            output_image(layer, name, output_folder)
+            export_image_to_file(layer, name, output_folder)
 
 if "auto" in segmentation_methods:
     masks = auto_seg(array, model)
@@ -82,10 +82,10 @@ if "auto" in segmentation_methods:
         if output_layer == "crop" or "both":
             layer = mask_to_layer(image, masks[i]['segmentation'], "crop")
             name = "auto_crop_" + str(i) + "." + img_format.lower()
-            output_image(layer, name, output_folder)
+            export_image_to_file(layer, name, output_folder)
         if output_layer == "mask" or "both":
             layer = mask_to_layer(image, masks[i]['segmentation'], "mask")
             name = "auto_mask_" + str(i) + "." + img_format.lower()
-            output_image(layer, name, output_folder)
+            export_image_to_file(layer, name, output_folder)
 
 print(f"Done! Output images are saved in {output_folder}.")

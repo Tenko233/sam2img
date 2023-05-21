@@ -66,8 +66,6 @@ image_card = html.Div([
             responsive='auto'
         )
     ], style={'display': 'flex', 'justify-content': 'center'}),
-
-    dcc.Store('image-data', storage_type='memory'),
     dcc.Store(id='image-info', storage_type='memory')
 
 ])
@@ -226,9 +224,29 @@ output_settings = html.Div([
                 value='png',
                 inline=True
             )
-        ], class_name='ml-0')
+        ], class_name='ml-0'),
+
+        dbc.Col([
+            dbc.Label('Output Mode:'),
+        ], lg=2, md=4, class_name='mr-0'),
+        dbc.Col([
+            dbc.Checklist(
+                id='output-mode',
+                options=['cut-out', 'mask only'],
+                value=['cut-out', 'mask only'],
+                inline=True
+            )
+        ])
+    ]),
+
+    dbc.Row([
+        dbc.Button('Export', id='export', color='success', class_name='mt-3')
+    ]),
+
+    dbc.Row([
+        html.Div(id='export-info', style={'visibility': 'hidden'})
     ])
-])
+], style={'margin-right': '10px'})
 
 output_area = dbc.Collapse([
     dbc.Row([
@@ -294,7 +312,7 @@ def upload_image(content, name, date):
     ]
     image = load_temp_data('image')
 
-    return {'image': img_key, 'size': size}, info
+    return {'image': img_key, 'size': size, 'name': name}, info
 
 
 @app.callback(
@@ -560,7 +578,7 @@ def draw_result(mask_data, mask_number, img_info):
         raise PreventUpdate
 
     ctx = dash.callback_context
-    if masks.shape[0] == 0:
+    if np.shape(masks)[0] == 0:
         raise PreventUpdate
     if ctx.triggered[0]['prop_id'] == 'mask.value':
         if mode == 'auto':
@@ -569,6 +587,9 @@ def draw_result(mask_data, mask_number, img_info):
         mask = [masks[mask_number]]
         masked_image = draw_mask(image, mask)
         fig = px.imshow(masked_image)
+        fig.update_layout(
+            width=800, height=800
+        )
         return fig
     else:
         match mode:
@@ -577,6 +598,9 @@ def draw_result(mask_data, mask_number, img_info):
                 mask = [masks[mask_number]]
                 masked_image = draw_mask(image, mask)
                 fig = px.imshow(masked_image)
+                fig.update_layout(
+                    width=800, height=800
+                )
                 return fig
 
             case 'box':
@@ -584,6 +608,9 @@ def draw_result(mask_data, mask_number, img_info):
                 mask = [masks[mask_number]]
                 masked_image = draw_mask(image, mask)
                 fig = px.imshow(masked_image)
+                fig.update_layout(
+                    width=800, height=800
+                )
                 return fig
 
             case 'auto':
@@ -591,9 +618,63 @@ def draw_result(mask_data, mask_number, img_info):
                 extracted_masks = [mask['segmentation'] for mask in masks]
                 image = draw_mask(image, extracted_masks)
                 fig = px.imshow(image)
+                fig.update_layout(
+                    width=800, height=800
+                )
                 return fig
+
+
+@app.callback(
+    Output('export-info', 'children'),
+    Output('export-info', 'style'),
+    Input('export', 'n_clicks'),
+    State('format', 'value'),
+    State('output-mode', 'value'),
+    State('image-info', 'data'),
+    State('output-image-data', 'data')
+)
+def export_image(n_clicks, format, output_mode, image_data, mask_data):
+    if n_clicks is None:
+        raise PreventUpdate
+    if not output_mode:
+        raise PreventUpdate
+    try:
+        img_data = load_temp_data(image_data['image'])
+        img_name = image_data['name']
+        image = Image.fromarray(np.array(img_data, dtype=np.uint8))
+        masks = load_temp_data(mask_data['masks'])
+        seg_mode = mask_data['mode']
+    except TypeError:
+        raise PreventUpdate
+
+    output_folder = 'output/' + img_name + '_seg'
+
+    if 'cut-out' in output_mode:
+        for i in range(len(masks)):
+            if seg_mode == 'auto':
+                layer = mask_to_layer(image, masks[i]['segmentation'], 'crop')
+            else:
+                layer = mask_to_layer(image, masks[i], 'crop')
+            if format == 'jpg':
+                layer = layer.convert('RGB')
+            name = seg_mode + '_crop_' + str(i) + '.' + format
+
+            export_image_to_file(layer, name, output_folder)
+
+    if 'mask only' in output_mode:
+        for i in range(len(masks)):
+            if seg_mode == 'auto':
+                layer = mask_to_layer(image, masks[i]['segmentation'], 'mask')
+            else:
+                layer = mask_to_layer(image, masks[i], 'mask')
+            if format == 'jpg':
+                layer = layer.convert('RGB')
+            name = seg_mode + '_mask_' + str(i) + '.' + format
+            export_image_to_file(layer, name, output_folder)
+
+    return f'Exported {len(masks)} masks, folder: {output_folder}', {'visibility': 'visible'}
 
 
 if __name__ == '__main__':
     app.layout = layout
-    app.run_server(debug=True)
+    app.run_server(debug=False, port=8050, host='')
